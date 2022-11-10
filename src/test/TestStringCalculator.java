@@ -45,5 +45,13 @@ public class TestStringCalculator {
         int result = strCalculator.add("1\n2,3");
         assertEquals(6,result);
     }
+
+    @Test
+    public void testAddDiffDelimiter(){
+        //4 Allow the add method to support custom delimiters as part of the input
+        StringCalculator strCalculator = new StringCalculator();
+        int result = strCalculator.add("//;\n1;2");
+        assertEquals(3,result);
+    }
 }
 
