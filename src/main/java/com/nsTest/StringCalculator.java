@@ -1,20 +1,30 @@
 package main.java.com.nsTest;
 
-import java.util.stream.Stream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringCalculator {
     public int add(String numbers) {
-        int sum;
-        if (numbers==null || numbers.equals(""))
+        int sum = 0;
+
+        if (numbers==null || numbers.isEmpty())
             return 0;
+
         try {
-            // step 1 & 2
-            String[] strings = numbers.split("[,\\n]");
-            sum = Stream.of(strings).mapToInt(Integer::valueOf).sum();
+            Pattern pattern1 = Pattern.compile ("^//(\\W)\\n?");
+            Matcher matcher = pattern1.matcher(numbers);
+            String customDelimiter = (matcher.find())? matcher.group(1): ",";
+            Pattern pattern2 = Pattern.compile ("(\\d+)"+ customDelimiter + "?");
+            matcher = pattern2.matcher(numbers);
+            while (matcher.find()){
+                //step4
+                sum += Integer.parseInt(matcher.group(1));
+            }
+            return sum;
+
         }catch (NumberFormatException numberFormatException){
             throw new IllegalArgumentException("String not allowed " + numberFormatException.getMessage(),
                     numberFormatException);
         }
-        return sum;
     }
 }
