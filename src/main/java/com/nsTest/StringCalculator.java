@@ -11,24 +11,36 @@ public class StringCalculator {
             return 0;
 
         try {
-            Pattern pattern1 = Pattern.compile ("^//(\\W)\\n?");
+            Pattern pattern1 = Pattern.compile ("^//(\\W*)\\n?");
             Matcher matcher = pattern1.matcher(numbers);
-            String customDelimiter = (matcher.find())? matcher.group(1): ",";
-            Pattern pattern2 = Pattern.compile ("(-?\\d+)"+ customDelimiter + "?");
-            matcher = pattern2.matcher(numbers);
+            String customDelimiter;
+            int  startSplitPosition = 0;
+            String separator = ",|\\n";
+
+            if (matcher.find()){
+                Pattern pattern2 = Pattern.compile ("\\[?([^]\\w]+)]?");
+                Matcher matcher2 = pattern2.matcher(numbers.substring(2, matcher.end()-1));
+                while (matcher2.find()){
+                    customDelimiter = matcher2.group(1);
+                    customDelimiter = customDelimiter.replaceAll("\\*", "\\\\\\*");
+                    separator= separator.concat("|").concat(customDelimiter);
+                }
+                startSplitPosition = matcher.end();
+            }
+
+            String[] strings = numbers.substring(startSplitPosition).split(separator);
             String negString = "";
-            while (matcher.find()){
-                //step4
-                //sum += Integer.valueOf(matcher.group(1));
-                if (Integer.parseInt(matcher.group(1)) > 0){
-                    if(Integer.parseInt(matcher.group(1)) <= 1000 ){
-                        sum += Integer.parseInt(matcher.group(1));
+            for(String s : strings){
+                if (Integer.parseInt(s) > 0){
+                    if(Integer.parseInt(s) <= 1000 ){
+                        sum += Integer.parseInt(s);
                     }
 
                 }else{
-                    negString = negString.concat(String.valueOf(matcher.group(1))).concat(";");
+                    negString = negString.concat(s).concat(";");
                 }
             }
+
             if (negString.isEmpty())
                 return sum;
             else

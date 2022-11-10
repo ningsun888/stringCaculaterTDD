@@ -76,5 +76,29 @@ public class TestStringCalculator {
         int result = strCalculator.add("2,1001");
         assertEquals(2,result);
     }
+
+    @Test
+    public void testAddAnyLengthDelimiter(){
+        //7 Allow delimiters to be of any length with the following format
+        StringCalculator strCalculator = new StringCalculator();
+        int result = strCalculator.add("//[***]\n1***2***3");
+        assertEquals(6,result);
+    }
+
+    @Test
+    public void testAddMultipleDelimiter(){
+        //8 Allow multiple delimiters
+        StringCalculator strCalculator = new StringCalculator();
+        int result = strCalculator.add("//[*][%]\n1*2%3");
+        assertEquals(6,result);
+    }
+
+    @Test
+    public void testAddMultipleDelimiterMoreThanOneChar(){
+        //9 handle multiple delimiters with length longer than one char
+        StringCalculator strCalculator = new StringCalculator();
+        int result = strCalculator.add("//[***][%%%%]\n1***2%%%%3");
+        assertEquals(6,result);
+    }
 }
 
