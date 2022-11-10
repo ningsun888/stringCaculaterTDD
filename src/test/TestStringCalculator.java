@@ -3,7 +3,7 @@ package test;
 import main.java.com.nsTest.StringCalculator;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TestStringCalculator {
     @Test
@@ -52,6 +52,29 @@ public class TestStringCalculator {
         StringCalculator strCalculator = new StringCalculator();
         int result = strCalculator.add("//;\n1;2");
         assertEquals(3,result);
+    }
+
+    @Test
+    public void testAddNegativeNum() {
+        //5 Handle negatives so that add will throw an exception “Negative numbers not allowed: ”
+        // and the negative number that was passed.
+        // If there are multiple negatives, show all of them in the exception message
+        try{
+            StringCalculator strCalculator = new StringCalculator();
+            int result = strCalculator.add("1,-2");
+            fail("Exception should be thrown.");
+        }catch(Exception ex){
+            //assertTrue(negativeNumberException);
+            assertTrue(ex.getMessage().contains("Negative numbers not allowed: -2;"));
+        }
+    }
+
+    @Test
+    public void testAddLagerThanOneThousand() {
+        //6 Change the add method to ignore numbers larger than 1000
+        StringCalculator strCalculator = new StringCalculator();
+        int result = strCalculator.add("2,1001");
+        assertEquals(2,result);
     }
 }
 
