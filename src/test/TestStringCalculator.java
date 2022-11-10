@@ -37,4 +37,13 @@ public class TestStringCalculator {
         int result = strCalculator.add("1,2,3,4");
         assertEquals(10,result);
     }
+
+    @Test
+    public void testAddHandleNewline(){
+        //3 Update the add method to handle new lines between numbers
+        StringCalculator strCalculator = new StringCalculator();
+        int result = strCalculator.add("1\n2,3");
+        assertEquals(6,result);
+    }
 }
+
